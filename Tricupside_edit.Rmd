@@ -1,0 +1,232 @@
+---
+title: "TRICUSPIDE"
+author: "Roger Borras, Cristina Mendoza"
+date: "22/5/2024"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Llibreries i dades
+
+```{r, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(gridExtra)
+library(RcmdrMisc)
+library(foreign)
+library(survival)
+require(rms)
+require(tidyverse)
+require(lme4)
+library(multcomp)
+library(emmeans)
+library(readxl)
+library(visdat)
+library(randomForest)
+library(corrplot)
+library(FactoMineR)
+#library(rms)
+library(rpart)
+library(pROC)
+library(partykit)
+library(plyr)
+library(lmerTest)
+library(pbkrtest) 
+library(car)
+library(gtsummary)
+library(epiDisplay)
+library(survminer)
+library(pROC)
+
+setwd("C:/Users/Cristina/OneDrive - Universitat de Barcelona/4t/2n semestre/TFG/TFG - Atrial Fibrillation/codis/R_statistical_analysis")
+
+dades <- read.spss("final_df_all.sav", use.value.labels=TRUE, max.value.labels=Inf, to.data.frame=TRUE)
+```
+
+
+# Predictors outcome severity_TR_eco
+
+```{r}
+logistic.display(glm(severity_TR_eco~RA_RA_Body_Volume_ml_Value, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_RA_Body_Sphericity_Value, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_0perc_body_Total_Area_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_0perc_body_BZCore_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_0perc_body_BZ_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_0perc_body_Core_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_0perc_body_BZCore_perc, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_0perc_body_BZ_perc, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~RA_0perc_body_Core_perc, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_LA_Body_Volume_ml_Value, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_LA_Body_Sphericity_Value, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_Total_Area_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_Total_Area_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_BZCore_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_BZ_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_Core_cm2, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_BZCore_perc, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_BZ_perc, family = binomial, data=dades))
+logistic.display(glm(severity_TR_eco~LA_0perc_body_Core_perc, family = binomial, data=dades))
+
+```
+
+# Predictors outcome AA_PRE_ADAS_mm2
+
+```{r}
+summary(lm(AA_PRE_ADAS_mm2 ~RA_RA_Body_Volume_ml_Value, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_RA_Body_Sphericity_Value, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_BZ_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_Core_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_BZCore_perc, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_BZ_perc, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_Core_perc, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~RA_0perc_body_Invalid_perc, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_LA_Body_Volume_ml_Value, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_LA_Body_Sphericity_Value, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_0perc_body_BZ_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_0perc_body_Core_cm2, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_0perc_body_BZCore_perc, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_0perc_body_BZ_perc, data=dades))
+summary(lm(AA_PRE_ADAS_mm2 ~LA_0perc_body_Core_perc, data=dades))
+```
+
+# Predictors outcome PA_PRE_ADAS_mm
+
+```{r}
+summary(lm(PA_PRE_ADAS_mm ~RA_RA_Body_Volume_ml_Value, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_RA_Body_Sphericity_Value, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_BZ_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_Core_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_BZCore_perc, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_BZ_perc, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_Core_perc, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~RA_0perc_body_Invalid_perc, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_LA_Body_Volume_ml_Value, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_LA_Body_Sphericity_Value, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_0perc_body_BZ_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_0perc_body_Core_cm2, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_0perc_body_BZCore_perc, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_0perc_body_BZ_perc, data=dades))
+summary(lm(PA_PRE_ADAS_mm ~LA_0perc_body_Core_perc, data=dades))
+```
+
+# Predictors outcome DMAX_PRE_ADAS_mm
+
+```{r}
+summary(lm(DMAX_PRE_ADAS_mm ~RA_RA_Body_Volume_ml_Value, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_RA_Body_Sphericity_Value, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_BZ_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_Core_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_BZCore_perc, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_BZ_perc, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_Core_perc, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~RA_0perc_body_Invalid_perc, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_LA_Body_Volume_ml_Value, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_LA_Body_Sphericity_Value, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_0perc_body_BZ_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_0perc_body_Core_cm2, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_0perc_body_BZCore_perc, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_0perc_body_BZ_perc, data=dades))
+summary(lm(DMAX_PRE_ADAS_mm ~LA_0perc_body_Core_perc, data=dades))
+```
+
+# Predictors outcome DMIN_PRE_ADASmm
+
+```{r}
+summary(lm(DMIN_PRE_ADASmm ~RA_RA_Body_Volume_ml_Value, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_RA_Body_Sphericity_Value, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_BZ_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_Core_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_BZCore_perc, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_BZ_perc, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_Core_perc, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~RA_0perc_body_Invalid_perc, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_LA_Body_Volume_ml_Value, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_LA_Body_Sphericity_Value, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_0perc_body_BZ_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_0perc_body_Core_cm2, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_0perc_body_BZCore_perc, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_0perc_body_BZ_perc, data=dades))
+summary(lm(DMIN_PRE_ADASmm ~LA_0perc_body_Core_perc, data=dades))
+```
+
+# Predictors outcome Eccentricity_1
+
+```{r}
+summary(lm(Eccentricity_1  ~RA_RA_Body_Volume_ml_Value, data=dades))
+summary(lm(Eccentricity_1 ~RA_RA_Body_Sphericity_Value, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_BZ_cm2, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_Core_cm2, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_BZCore_perc, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_BZ_perc, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_Core_perc, data=dades))
+summary(lm(Eccentricity_1 ~RA_0perc_body_Invalid_perc, data=dades))
+summary(lm(Eccentricity_1 ~LA_LA_Body_Volume_ml_Value, data=dades))
+summary(lm(Eccentricity_1 ~LA_LA_Body_Sphericity_Value, data=dades))
+summary(lm(Eccentricity_1 ~LA_0perc_body_Total_Area_cm2, data=dades))
+summary(lm(Eccentricity_1 ~LA_0perc_body_BZCore_cm2, data=dades))
+summary(lm(Eccentricity_1 ~LA_0perc_body_BZ_cm2, data=dades))
+summary(lm(Eccentricity_1 ~LA_0perc_body_Core_cm2, data=dades))
+summary(lm(Eccentricity_1 ~LA_0perc_body_BZCore_perc, data=dades))
+summary(lm(Eccentricity_1 ~LA_0perc_body_BZ_perc, data=dades))
+summary(lm(Eccentricity_1 ~LA_0perc_body_Core_perc, data=dades))
+```
+
+# Figures
+
+```{r}
+library(ggplot2)
+
+ggplot(dades, aes(x=RA_RA_Body_Volume_ml_Value, y=AA_PRE_ADAS_mm2)) + 
+  geom_point(cex=3) + xlab('RA volume (ml)') + ylab('TA area (mm2)') + theme_light(base_size = 15) +
+  geom_smooth(method = "lm", se = TRUE, col='orange', lwd=2)
+ 
+
+ggplot(dades, aes(x=RA_RA_Body_Sphericity_Value, y=AA_PRE_ADAS_mm2)) + 
+  geom_point(cex=3) + xlab('RA sphericity') + ylab('TA area (mm2)') + theme_light(base_size = 15) +
+  geom_smooth(method = "lm", se = TRUE, col='orange', lwd=2)
+
+
+ggplot(dades, aes(x=RA_0perc_body_Total_Area_cm2, y=AA_PRE_ADAS_mm2)) + 
+  geom_point(cex=3) + xlab('RA surface area (cm2)') + ylab('TA area (mm2)') + theme_light(base_size = 15) +
+  geom_smooth(method = "lm", se = TRUE, col='orange', lwd=2)
+
+
+ggplot(dades, aes(x=LA_LA_Body_Volume_ml_Value, y=AA_PRE_ADAS_mm2)) + 
+  geom_point(cex=3) + xlab('LA volume (ml)') + ylab('TA area (mm2)') + theme_light(base_size = 15) +
+  geom_smooth(method = "lm", se = TRUE, col='orange', lwd=2)
+
+
+ggplot(dades, aes(x=RA_RA_Body_Sphericity_Value, y=Eccentricity_1)) + 
+  geom_point(cex=3) + xlab('RA sphericity') + ylab('TA eccentricity') + theme_light(base_size = 15) +
+  geom_smooth(method = "lm", se = TRUE, col='orange', lwd=2)
+
+
+ggplot(dades, aes(x=LA_LA_Body_Volume_ml_Value, y=severity_TR_eco)) + 
+  geom_point(cex=3) + xlab('LA volume (ml)') + ylab('TR presence (binary)') + theme_light(base_size = 15) +
+  stat_smooth(method = "glm", se = TRUE, color='orange', lwd=2, method.args = list(family = binomial))
+
+```
+
